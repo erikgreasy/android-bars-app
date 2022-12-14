@@ -13,4 +13,7 @@
     <string name="repeat_password">repeat password</string>
     <string name="back">back</string>
     <string name="zobrazit_na_mape">Zobrazit na mape</string>
+
+    <string name="pub_detail_title">Pub detail</string>
+
 </resources>
