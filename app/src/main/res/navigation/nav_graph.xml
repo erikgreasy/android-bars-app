@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/bars_fragment"
     android:id="@+id/nav_graph">
 
@@ -47,4 +48,11 @@
     <action
         android:id="@+id/action_to_detail"
         app:destination="@id/detail_fragment" />
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.example.zadanie.ui.fragments.FriendsFragment"
+        android:label="FriendsFragment" />
+    <action
+        android:id="@+id/action_global_friendsFragment"
+        app:destination="@id/friendsFragment" />
 </navigation>

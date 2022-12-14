@@ -12,7 +12,8 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp">
+        android:layout_marginBottom="56dp"
+        android:paddingBottom="0dp">
 
         <TextView
             android:id="@+id/header_title"
