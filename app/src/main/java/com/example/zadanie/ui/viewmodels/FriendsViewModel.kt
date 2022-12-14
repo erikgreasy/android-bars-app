@@ -3,6 +3,7 @@ package com.example.zadanie.ui.viewmodels
 import androidx.lifecycle.*
 import com.example.zadanie.data.DataRepository
 import com.example.zadanie.data.db.model.BarItem
+import com.example.zadanie.data.db.model.Friend
 import com.example.zadanie.helpers.Evento
 import kotlinx.coroutines.launch
 
@@ -13,18 +14,18 @@ class FriendsViewModel(private val repository: DataRepository): ViewModel() {
 
     val loading = MutableLiveData(false)
 
-    val bars: LiveData<List<BarItem>?> =
+    val friends: LiveData<List<Friend>?> =
         liveData {
             loading.postValue(true)
-            repository.apiBarList { _message.postValue(Evento(it)) }
+            repository.apiFriendsList { _message.postValue(Evento(it)) }
             loading.postValue(false)
-            emitSource(repository.dbBars())
+            emitSource(repository.dbFriends())
         }
 
     fun refreshData(){
         viewModelScope.launch {
             loading.postValue(true)
-            repository.apiBarList { _message.postValue(Evento(it)) }
+            repository.apiFriendsList { _message.postValue(Evento(it)) }
             loading.postValue(false)
         }
     }

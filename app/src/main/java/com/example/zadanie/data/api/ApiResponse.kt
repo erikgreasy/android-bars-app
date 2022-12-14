@@ -26,3 +26,10 @@ data class BarDetailItemResponse(
 data class BarDetailResponse(
     val elements: List<BarDetailItemResponse>
 )
+
+data class FriendsListResponse(
+    val user_id: String,
+    val user_name: String,
+    val bar_id: String?,
+    val bar_name: String?,
+)

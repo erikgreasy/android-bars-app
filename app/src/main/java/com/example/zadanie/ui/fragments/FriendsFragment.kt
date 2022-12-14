@@ -1,60 +1,86 @@
 package com.example.zadanie.ui.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.zadanie.R
+import com.example.zadanie.databinding.FragmentBarsBinding
+import com.example.zadanie.databinding.FragmentFriendsBinding
+import com.example.zadanie.helpers.Injection
+import com.example.zadanie.helpers.PreferenceData
+import com.example.zadanie.ui.viewmodels.BarsViewModel
+import com.example.zadanie.ui.viewmodels.FriendsViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FriendsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FriendsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentFriendsBinding
+    private lateinit var viewmodel: FriendsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        viewmodel = ViewModelProvider(
+            this,
+            Injection.provideViewModelFactory(requireContext())
+        ).get(FriendsViewModel::class.java)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false)
+    ): View {
+        binding = FragmentFriendsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FriendsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FriendsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val x = PreferenceData.getInstance().getUserItem(requireContext())
+        if ((x?.uid ?: "").isBlank()) {
+            Navigation.findNavController(view).navigate(R.id.action_to_login)
+            return
+        }
+
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            model = viewmodel
+        }.also { bnd ->
+            bnd.swiperefresh.setOnRefreshListener {
+                viewmodel.refreshData()
             }
+
+//            bnd.findBar.setOnClickListener {
+//                if (checkPermissions()) {
+//                    it.findNavController().navigate(R.id.action_to_locate)
+//                } else {
+//                    locationPermissionRequest.launch(
+//                        arrayOf(
+//                            Manifest.permission.ACCESS_FINE_LOCATION,
+//                            Manifest.permission.ACCESS_COARSE_LOCATION
+//                        )
+//                    )
+//                }
+//            }
+        }
+
+        viewmodel.loading.observe(viewLifecycleOwner) {
+            binding.swiperefresh.isRefreshing = it
+        }
+
+        viewmodel.message.observe(viewLifecycleOwner) {
+            if (PreferenceData.getInstance().getUserItem(requireContext()) == null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_to_login)
+            }
+        }
     }
 }

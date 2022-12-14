@@ -1,10 +1,12 @@
 package com.example.zadanie.data
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.zadanie.data.api.*
 import com.example.zadanie.data.db.LocalCache
 import com.example.zadanie.data.db.model.BarItem
+import com.example.zadanie.data.db.model.Friend
 import com.example.zadanie.ui.viewmodels.data.MyLocation
 import com.example.zadanie.ui.viewmodels.data.NearbyBar
 import java.io.IOException
@@ -203,6 +205,41 @@ class DataRepository private constructor(
 
     fun dbBars() : LiveData<List<BarItem>?> {
         return cache.getBars()
+    }
+
+    suspend fun apiFriendsList(
+        onError: (error: String) -> Unit
+    ) {
+        try {
+            val resp = service.friendsList()
+            if (resp.isSuccessful) {
+                resp.body()?.let { friends ->
+
+                    val f = friends.map {
+                        Friend(
+                            it.user_id,
+                            it.user_name,
+                            it.bar_name,
+                            it.bar_id,
+                        )
+                    }
+                    cache.deleteFriends()
+                    cache.insertFriends(f)
+                } ?: onError("Failed to load bars")
+            } else {
+                onError("Failed to read bars")
+            }
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            onError("Failed to load bars, check internet connection")
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            onError("Failed to load bars, error.")
+        }
+    }
+
+    fun dbFriends() : LiveData<List<Friend>?> {
+        return cache.getFriends()
     }
 
     companion object{
