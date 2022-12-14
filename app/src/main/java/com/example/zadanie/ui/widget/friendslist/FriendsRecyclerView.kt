@@ -7,7 +7,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zadanie.data.db.model.Friend
+import com.example.zadanie.ui.fragments.BarDetailFragmentDirections
 import com.example.zadanie.ui.fragments.BarsFragmentDirections
+import com.example.zadanie.ui.fragments.FriendsFragmentDirections
 
 class FriendsRecyclerView : RecyclerView {
     private lateinit var friendsAdapter: FriendsAdapter
@@ -35,8 +37,12 @@ class FriendsRecyclerView : RecyclerView {
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         friendsAdapter = FriendsAdapter(object : FriendsEvents {
             override fun onFriendClick(friend: Friend) {
+                if(friend.barId.isNullOrBlank()) {
+                    return
+                }
+
                 this@FriendsRecyclerView.findNavController().navigate(
-                    BarsFragmentDirections.actionToDetail(friend.id)
+                    FriendsFragmentDirections.actionFriendsFragmentToDetailFragment(friend.barId)
                 )
             }
         })

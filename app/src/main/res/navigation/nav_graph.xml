@@ -51,7 +51,11 @@
     <fragment
         android:id="@+id/friendsFragment"
         android:name="com.example.zadanie.ui.fragments.FriendsFragment"
-        android:label="FriendsFragment" />
+        android:label="FriendsFragment" >
+        <action
+            android:id="@+id/action_friendsFragment_to_detail_fragment"
+            app:destination="@id/detail_fragment" />
+    </fragment>
     <action
         android:id="@+id/action_global_friendsFragment"
         app:destination="@id/friendsFragment" />
