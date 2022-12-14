@@ -8,10 +8,8 @@
 .externalNativeBuild
 .cxx
 local.properties
-app/src/main/java/com/example/zadanie/helpers/Config.kt
 *.aab
 *.apk
-app/src/main/java/com/example/zadanie/helpers/Config.kt
 gradle/wrapper/gradle-wrapper.jar
 gradlew
 gradlew.bat
