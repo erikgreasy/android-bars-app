@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/nav_graph"
+        android:layout_marginBottom="56dp"
+        tools:layout="@layout/fragment_bars" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
