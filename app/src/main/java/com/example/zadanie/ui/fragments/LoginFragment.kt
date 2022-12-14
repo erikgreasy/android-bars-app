@@ -1,6 +1,7 @@
 package com.example.zadanie.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.navigation.findNavController
 import com.example.zadanie.R
 import com.example.zadanie.databinding.FragmentLoginBinding
 import com.example.zadanie.helpers.Injection
+import com.example.zadanie.helpers.PasswordHelper
 import com.example.zadanie.helpers.PreferenceData
 import com.example.zadanie.ui.viewmodels.AuthViewModel
 
@@ -52,10 +54,12 @@ class LoginFragment : Fragment() {
 
         binding.login.setOnClickListener {
             if (binding.username.text.toString().isNotBlank() && binding.password.text.toString().isNotBlank()) {
+                val hashPassword = String(PasswordHelper.hash(binding.password.text.toString()))
+
                 //it.findNavController().popBackStack(R.id.bars_fragment,false)
                 authViewModel.login(
                     binding.username.text.toString(),
-                    binding.password.text.toString()
+                    hashPassword
                 )
             }else {
                 authViewModel.show("Fill in name and password")
