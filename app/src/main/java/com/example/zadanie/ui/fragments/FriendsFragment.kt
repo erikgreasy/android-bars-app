@@ -1,23 +1,17 @@
 package com.example.zadanie.ui.fragments
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.zadanie.R
-import com.example.zadanie.databinding.FragmentBarsBinding
 import com.example.zadanie.databinding.FragmentFriendsBinding
 import com.example.zadanie.helpers.Injection
 import com.example.zadanie.helpers.PreferenceData
-import com.example.zadanie.ui.viewmodels.BarsViewModel
 import com.example.zadanie.ui.viewmodels.FriendsViewModel
 
 class FriendsFragment : Fragment() {
@@ -59,18 +53,11 @@ class FriendsFragment : Fragment() {
                 viewmodel.refreshData()
             }
 
-//            bnd.findBar.setOnClickListener {
-//                if (checkPermissions()) {
-//                    it.findNavController().navigate(R.id.action_to_locate)
-//                } else {
-//                    locationPermissionRequest.launch(
-//                        arrayOf(
-//                            Manifest.permission.ACCESS_FINE_LOCATION,
-//                            Manifest.permission.ACCESS_COARSE_LOCATION
-//                        )
-//                    )
-//                }
-//            }
+            bnd.addFriend.setOnClickListener {
+                it.findNavController().navigate(
+                    FriendsFragmentDirections.actionFriendsFragmentToAddFriendFragment()
+                )
+            }
         }
 
         viewmodel.loading.observe(viewLifecycleOwner) {
