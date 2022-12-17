@@ -14,6 +14,10 @@ class FriendsViewModel(private val repository: DataRepository): ViewModel() {
 
     val loading = MutableLiveData(false)
 
+    private val _added = MutableLiveData<Evento<Boolean>>()
+    val added: LiveData<Evento<Boolean>>
+        get() = _added
+
     val friends: LiveData<List<Friend>?> =
         liveData {
             loading.postValue(true)
@@ -30,5 +34,17 @@ class FriendsViewModel(private val repository: DataRepository): ViewModel() {
         }
     }
 
+    fun addFriend(username: String) {
+        viewModelScope.launch {
+            loading.postValue(true)
+            repository.addFriend(
+                username,
+                { _message.postValue(Evento(it)) },
+                {_added.postValue(Evento(it))}
+            )
+            loading.postValue(false)
+        }
+    }
+
     fun show(msg: String){ _message.postValue(Evento(msg))}
-}
+} 
