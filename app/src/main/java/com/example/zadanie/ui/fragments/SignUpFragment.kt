@@ -50,28 +50,29 @@ class SignUpFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             model = authViewModel
-        }
+        }.also { bnd ->
+            bnd.signup.setOnClickListener {
+                if (bnd.username.text.toString().isNotBlank() && bnd.password.text.toString().isNotBlank()
+                    && bnd.password.text.toString().compareTo(bnd.repeatPassword.text.toString())==0) {
 
-        binding.signup.setOnClickListener {
-            if (binding.username.text.toString().isNotBlank() && binding.password.text.toString().isNotBlank()
-                && binding.password.text.toString().compareTo(binding.repeatPassword.text.toString())==0) {
+                    val hashPassword = String(PasswordHelper.hash(bnd.password.text.toString()))
 
-                val hashPassword = String(PasswordHelper.hash(binding.password.text.toString()))
+                    authViewModel.signup(
+                        bnd.username.text.toString(),
+                        hashPassword
+                    )
+                } else if (bnd.username.text.toString().isBlank() || bnd.password.text.toString().isBlank()){
+                    authViewModel.show("Fill in name and password")
+                } else {
+                    authViewModel.show("Passwords must be same")
+                }
+            }
 
-                authViewModel.signup(
-                    binding.username.text.toString(),
-                    hashPassword
-                )
-            } else if (binding.username.text.toString().isBlank() || binding.password.text.toString().isBlank()){
-                authViewModel.show("Fill in name and password")
-            } else {
-                authViewModel.show("Passwords must be same")
+            bnd.login.setOnClickListener {
+                it.findNavController().navigate(R.id.action_to_login)
             }
         }
 
-        binding.login.setOnClickListener {
-            it.findNavController().navigate(R.id.action_to_login)
-        }
 
         authViewModel.user.observe(viewLifecycleOwner){
             it?.let {

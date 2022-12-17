@@ -50,25 +50,26 @@ class LoginFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             model = authViewModel
-        }
+        }.also { bnd ->
+            bnd.login.setOnClickListener {
+                if (bnd.username.text.toString().isNotBlank() && bnd.password.text.toString().isNotBlank()) {
+                    val hashPassword = String(PasswordHelper.hash(bnd.password.text.toString()))
 
-        binding.login.setOnClickListener {
-            if (binding.username.text.toString().isNotBlank() && binding.password.text.toString().isNotBlank()) {
-                val hashPassword = String(PasswordHelper.hash(binding.password.text.toString()))
+                    //it.findNavController().popBackStack(R.id.bars_fragment,false)
+                    authViewModel.login(
+                        bnd.username.text.toString(),
+                        hashPassword
+                    )
+                }else {
+                    authViewModel.show("Fill in name and password")
+                }
+            }
 
-                //it.findNavController().popBackStack(R.id.bars_fragment,false)
-                authViewModel.login(
-                    binding.username.text.toString(),
-                    hashPassword
-                )
-            }else {
-                authViewModel.show("Fill in name and password")
+            bnd.signup.setOnClickListener {
+                it.findNavController().navigate(R.id.action_to_sign_up)
             }
         }
 
-        binding.signup.setOnClickListener {
-            it.findNavController().navigate(R.id.action_to_sign_up)
-        }
 
         authViewModel.user.observe(viewLifecycleOwner){
             it?.let {
