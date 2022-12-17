@@ -1,6 +1,7 @@
 package com.example.zadanie.ui.fragments
 
 import android.Manifest
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.DialogInterface
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.airbnb.lottie.LottieAnimationView
 import com.example.zadanie.GeofenceBroadcastReceiver
 import com.example.zadanie.R
 import com.example.zadanie.databinding.FragmentLocateBinding
@@ -93,25 +95,47 @@ class LocateFragment : Fragment() {
                 loadData()
             }
 
-            bnd.checkme.setOnClickListener {
+            bnd.checkAnimation.setOnClickListener {
+                it as LottieAnimationView
+
                 if (checkBackgroundPermissions()) {
-                    viewmodel.checkMe()
+                    it.playAnimation()
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         permissionDialog()
                     }
                 }
+
+                it.addAnimatorListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: Animator) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+                        viewmodel.checkMe()
+                    }
+
+                    override fun onAnimationCancel(animation: Animator) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator) {
+                        TODO("Not yet implemented")
+                    }
+                })
             }
+
             bnd.nearbyBars.events = object : NearbyBarsEvents {
                 override fun onBarClick(nearbyBar: NearbyBar) {
                     viewmodel.myBar.postValue(nearbyBar)
                 }
-
             }
         }
+
         viewmodel.loading.observe(viewLifecycleOwner) {
             binding.swiperefresh.isRefreshing = it
         }
+
         viewmodel.checkedIn.observe(viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let {
                 if (it) {
