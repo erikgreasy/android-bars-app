@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -17,6 +18,7 @@ import com.example.zadanie.databinding.FragmentBarsBinding
 import com.example.zadanie.helpers.Injection
 import com.example.zadanie.helpers.PreferenceData
 import com.example.zadanie.ui.viewmodels.BarsViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BarsFragment : Fragment() {
     private lateinit var binding: FragmentBarsBinding
@@ -67,6 +69,8 @@ class BarsFragment : Fragment() {
         if ((x?.uid ?: "").isBlank()) {
             Navigation.findNavController(view).navigate(R.id.action_to_login)
             return
+        } else {
+            activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.isVisible = true
         }
 
         binding.apply {
