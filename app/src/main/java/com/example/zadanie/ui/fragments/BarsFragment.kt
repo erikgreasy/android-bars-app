@@ -3,20 +3,24 @@ package com.example.zadanie.ui.fragments
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.zadanie.R
+import com.example.zadanie.databinding.FilterChipBinding
 import com.example.zadanie.databinding.FragmentBarsBinding
 import com.example.zadanie.helpers.Injection
 import com.example.zadanie.helpers.PreferenceData
 import com.example.zadanie.ui.viewmodels.BarsViewModel
+import com.google.android.material.chip.Chip
 
 class BarsFragment : Fragment() {
     private lateinit var binding: FragmentBarsBinding
@@ -57,6 +61,8 @@ class BarsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBarsBinding.inflate(inflater, container, false)
+        setupChip()
+
         return binding.root
     }
 
@@ -94,6 +100,29 @@ class BarsFragment : Fragment() {
                     )
                 }
             }
+
+            bnd.filterChips.setOnCheckedStateChangeListener { group, checkedIds ->
+                for (i in 0 until group.childCount) {
+                    val chip = group.getChildAt(i) as Chip
+
+                    if(chip.isChecked) {
+                        viewmodel.setActiveFilter(
+                            chip.text.toString()
+                        )
+                    }
+                }
+            }
+        }
+
+
+        viewmodel.activeFilter.observe(viewLifecycleOwner) {
+            for (i in 0 until binding.filterChips.childCount) {
+                val chip = binding.filterChips.getChildAt(i) as Chip
+
+                if(chip.isChecked) {
+                    Log.e("checked chip", chip.text.toString())
+                }
+            }
         }
 
         viewmodel.loading.observe(viewLifecycleOwner) {
@@ -106,6 +135,26 @@ class BarsFragment : Fragment() {
             }
         }
     }
+
+
+    private fun setupChip() {
+        for (name in viewmodel.filters) {
+            val chip = createChip(name)
+
+            if(name == viewmodel.activeFilter.value) {
+                chip.isChecked = true
+            }
+
+            binding.filterChips.addView(chip)
+        }
+    }
+
+    private fun createChip(label: String): Chip {
+        val chip = FilterChipBinding.inflate(layoutInflater).root
+        chip.text = label
+        return chip
+    }
+
 
     private fun checkPermissions(): Boolean {
         return ActivityCompat.checkSelfPermission(

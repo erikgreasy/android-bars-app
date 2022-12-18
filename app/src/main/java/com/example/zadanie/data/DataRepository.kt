@@ -3,6 +3,8 @@ package com.example.zadanie.data
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.example.zadanie.data.api.*
 import com.example.zadanie.data.db.LocalCache
 import com.example.zadanie.data.db.model.BarItem
@@ -107,7 +109,7 @@ class DataRepository private constructor(
 
     suspend fun apiBarList(
         onError: (error: String) -> Unit
-    ) {
+    ): List<BarItem>? {
         try {
             val resp = service.barList()
             if (resp.isSuccessful) {
@@ -125,16 +127,22 @@ class DataRepository private constructor(
                     }
                     cache.deleteBars()
                     cache.insertBars(b)
+
+                    return b
                 } ?: onError("Failed to load bars")
             } else {
                 onError("Failed to read bars")
             }
+            return null
         } catch (ex: IOException) {
             ex.printStackTrace()
             onError("Failed to load bars, check internet connection")
+            return null
+
         } catch (ex: Exception) {
             ex.printStackTrace()
             onError("Failed to load bars, error.")
+            return null
         }
     }
 
