@@ -20,7 +20,7 @@
             android:id="@+id/pub_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary_light"
+            android:background="@color/cyan"
             android:contentDescription="@string/pub_detail_title"
             android:padding="8dp"
             android:src="@drawable/drink_svgrepo_com" />

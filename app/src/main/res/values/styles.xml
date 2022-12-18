@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:paddingVertical">13dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+</resources>
