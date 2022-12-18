@@ -108,7 +108,6 @@ class LocateFragment : Fragment() {
 
                 it.addAnimatorListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator) {
-                        TODO("Not yet implemented")
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
@@ -116,11 +115,9 @@ class LocateFragment : Fragment() {
                     }
 
                     override fun onAnimationCancel(animation: Animator) {
-                        TODO("Not yet implemented")
                     }
 
                     override fun onAnimationRepeat(animation: Animator) {
-                        TODO("Not yet implemented")
                     }
                 })
             }
