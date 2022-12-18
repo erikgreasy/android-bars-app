@@ -225,16 +225,16 @@ class DataRepository private constructor(
                     }
                     cache.deleteFriends()
                     cache.insertFriends(f)
-                } ?: onError("Failed to load bars")
+                } ?: onError("Failed to load friends")
             } else {
-                onError("Failed to read bars")
+                onError("Failed to read friends")
             }
         } catch (ex: IOException) {
             ex.printStackTrace()
-            onError("Failed to load bars, check internet connection")
+            onError("Failed to load friends, check internet connection")
         } catch (ex: Exception) {
             ex.printStackTrace()
-            onError("Failed to load bars, error.")
+            onError("Failed to load friends, error.")
         }
     }
 
