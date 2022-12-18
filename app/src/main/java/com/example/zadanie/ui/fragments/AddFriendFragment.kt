@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.zadanie.R
 import com.example.zadanie.databinding.FragmentAddFriendBinding
 import com.example.zadanie.helpers.Injection
+import com.example.zadanie.helpers.PreferenceData
 import com.example.zadanie.ui.viewmodels.AddFriendViewModel
 import com.example.zadanie.ui.viewmodels.AuthViewModel
 import com.example.zadanie.ui.viewmodels.FriendsViewModel
@@ -72,5 +73,10 @@ class AddFriendFragment : Fragment() {
             }
         }
 
+        viewModel.message.observe(viewLifecycleOwner) {
+            if (PreferenceData.getInstance().getUserItem(requireContext()) == null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_to_login)
+            }
+        }
     }
 }
