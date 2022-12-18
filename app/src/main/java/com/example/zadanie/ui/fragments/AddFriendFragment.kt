@@ -43,6 +43,12 @@ class AddFriendFragment : Fragment() {
             model = friendsViewModel
             lifecycleOwner = viewLifecycleOwner
         }.also { bnd ->
+            bnd.back.setOnClickListener {
+                findNavController().navigate(
+                    AddFriendFragmentDirections.actionAddFriendFragmentToFriendsFragment()
+                )
+            }
+
             bnd.submitBtn.setOnClickListener {
                 if (binding.friendNameInput.text.toString().isNotBlank()) {
                     friendsViewModel.addFriend(
