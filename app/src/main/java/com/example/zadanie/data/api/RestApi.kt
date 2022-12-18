@@ -24,9 +24,6 @@ interface RestApi {
     @POST("user/login.php")
     suspend fun userLogin(@Body user: UserLoginRequest): Response<UserResponse>
 
-//    @POST("user/refresh.php")
-//    suspend fun userRefresh(@Body user: UserRefreshRequest) : Response<UserResponse>
-
     @POST("user/refresh.php")
     fun userRefresh(@Body user: UserRefreshRequest) : Call<UserResponse>
 
