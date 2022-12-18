@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Bars"
+        android:title="@string/bottom_nav_bars"
         android:id="@+id/bars_fragment"
         android:icon="@drawable/drink_2_svgrepo_com"
         />
     <item
-        android:title="Friends"
+        android:title="@string/bottom_nav_friends"
         android:id="@+id/friendsFragment"
         android:icon="@drawable/people_svgrepo_com"
         />

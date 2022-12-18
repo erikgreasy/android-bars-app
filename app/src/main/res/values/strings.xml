@@ -24,5 +24,7 @@
     <string name="add_friend_prompt">Friend\'s name</string>
     <string name="add_friend_submit">Submit</string>
 
+    <string name="bottom_nav_bars">Bars</string>
+    <string name="bottom_nav_friends">Friends</string>
 
 </resources>
