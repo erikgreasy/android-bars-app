@@ -250,10 +250,8 @@ class DataRepository private constructor(
         try {
             val resp = service.addFriend(AddFriendRequest(username))
             if (resp.isSuccessful) {
-                Log.e("add friend", resp.toString())
                 onSuccess(true)
             } else {
-                Log.e("add friend err", resp.toString())
                 onError("Failed to add friend")
             }
         } catch (ex: IOException) {
