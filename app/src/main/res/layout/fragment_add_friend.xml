@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.example.zadanie.ui.viewmodels.FriendsViewModel" />
+            type="com.example.zadanie.ui.viewmodels.AddFriendViewModel" />
 
         <import type="android.view.View"/>
     </data>

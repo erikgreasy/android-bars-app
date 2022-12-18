@@ -11,20 +11,21 @@ import androidx.navigation.fragment.findNavController
 import com.example.zadanie.R
 import com.example.zadanie.databinding.FragmentAddFriendBinding
 import com.example.zadanie.helpers.Injection
+import com.example.zadanie.ui.viewmodels.AddFriendViewModel
 import com.example.zadanie.ui.viewmodels.AuthViewModel
 import com.example.zadanie.ui.viewmodels.FriendsViewModel
 
 class AddFriendFragment : Fragment() {
     private lateinit var binding: FragmentAddFriendBinding
-    private lateinit var friendsViewModel: FriendsViewModel
+    private lateinit var viewModel: AddFriendViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        friendsViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             Injection.provideViewModelFactory(requireContext())
-        ).get(FriendsViewModel::class.java)
+        ).get(AddFriendViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -40,7 +41,7 @@ class AddFriendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            model = friendsViewModel
+            model = viewModel
             lifecycleOwner = viewLifecycleOwner
         }.also { bnd ->
             bnd.back.setOnClickListener {
@@ -51,19 +52,19 @@ class AddFriendFragment : Fragment() {
 
             bnd.submitBtn.setOnClickListener {
                 if (binding.friendNameInput.text.toString().isNotBlank()) {
-                    friendsViewModel.addFriend(
+                    viewModel.addFriend(
                         binding.friendNameInput.text.toString()
                     )
                 } else {
-                    friendsViewModel.show("Fill in friend's name")
+                    viewModel.show("Fill in friend's name")
                 }
             }
         }
 
-        friendsViewModel.added.observe(viewLifecycleOwner) {
+        viewModel.added.observe(viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let {
                 if (it) {
-                    friendsViewModel.show("Friend has been added.")
+                    viewModel.show("Friend has been added.")
                     findNavController().navigate(
                         R.id.action_global_friendsFragment
                     )
