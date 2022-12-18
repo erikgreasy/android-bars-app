@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="model"
             type="com.example.zadanie.ui.viewmodels.LocateViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -70,16 +70,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/name"/>
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:text="I'm here"
-                    android:id="@+id/checkme"
-                    app:layout_constraintTop_toBottomOf="@id/name"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/checkAnimation"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:enabled="@{model.myBar!=null}"
-                    />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-20dp"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="false"
+                    app:lottie_rawRes="@raw/drink" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
