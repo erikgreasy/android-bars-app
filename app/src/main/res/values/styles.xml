@@ -4,4 +4,9 @@
         <item name="android:paddingVertical">13dp</item>
         <item name="android:layout_marginBottom">10dp</item>
     </style>
+
+    <style name="MainPageTitle" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
 </resources>

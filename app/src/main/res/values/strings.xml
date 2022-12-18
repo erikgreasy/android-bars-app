@@ -27,4 +27,6 @@
     <string name="bottom_nav_bars">Bars</string>
     <string name="bottom_nav_friends">Friends</string>
 
+    <string name="locate_title">Check in</string>
+
 </resources>

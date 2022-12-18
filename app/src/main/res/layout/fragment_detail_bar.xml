@@ -14,28 +14,41 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp">
+        android:paddingHorizontal="10dp">
 
-        <TextView
-            android:id="@+id/header_title"
-            style="@style/TextAppearance.Material3.HeadlineMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.bar.name}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Bar Name" />
-
-        <TextView
+        <ImageView
             android:id="@+id/back"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:text="@string/back"
+            android:src="@drawable/ic_baseline_chevron_left_24"
             app:layout_constraintBottom_toBottomOf="@id/header_title"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/header_title" />
+
+        <TextView
+            android:id="@+id/header_title"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.bar.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Bar Name" />
+
+        <ImageView
+            android:id="@+id/mapButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/header_title"
+            app:layout_constraintBottom_toBottomOf="@+id/header_title"
+            android:visibility="@{model.loading ? View.INVISIBLE : View.VISIBLE}"
+            android:src="@drawable/map_svgrepo_com"
+            />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/type"
@@ -43,16 +56,12 @@
             android:layout_height="wrap_content"
             android:text="@{model.type}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_title" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mapButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/zobrazit_na_mape"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/cyan"
+            android:layout_marginTop="10dp"
             android:visibility="@{model.loading ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/type" />
+            android:clickable="false"
+            app:layout_constraintTop_toBottomOf="@id/header_title" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -61,7 +70,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="@{model.loading ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/mapButton"
+            app:layout_constraintBottom_toBottomOf="@id/type"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/back" />
 
@@ -71,7 +80,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mapButton" />
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/type" />
 
         <View
             showTextToast="@{model.message}"
