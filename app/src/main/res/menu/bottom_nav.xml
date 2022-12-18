@@ -3,9 +3,11 @@
     <item
         android:title="Bars"
         android:id="@+id/bars_fragment"
+        android:icon="@drawable/drink_2_svgrepo_com"
         />
     <item
         android:title="Friends"
         android:id="@+id/friendsFragment"
+        android:icon="@drawable/people_svgrepo_com"
         />
 </menu>
