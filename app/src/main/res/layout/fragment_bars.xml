@@ -64,7 +64,7 @@
             android:layout_margin="20dp"
             android:src="@drawable/ic_baseline_location_on_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:backgroundTint="@color/cyan"
+            android:backgroundTint="@color/cyan_dark"
             app:borderWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent" />
 
