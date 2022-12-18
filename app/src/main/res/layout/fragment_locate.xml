@@ -103,11 +103,12 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/type"
-                    android:text="@{model.myBar.type}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{model.myBar.type}"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/name"/>
+                    app:layout_constraintTop_toBottomOf="@id/name" />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/checkAnimation"
