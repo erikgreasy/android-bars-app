@@ -3,10 +3,12 @@ package com.example.zadanie.data
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.zadanie.data.api.*
 import com.example.zadanie.data.db.LocalCache
 import com.example.zadanie.data.db.model.BarItem
 import com.example.zadanie.data.db.model.Friend
+import com.example.zadanie.ui.viewmodels.SortKeys
 import com.example.zadanie.ui.viewmodels.data.MyLocation
 import com.example.zadanie.ui.viewmodels.data.NearbyBar
 import java.io.IOException
@@ -203,8 +205,19 @@ class DataRepository private constructor(
         return nearby
     }
 
-    fun dbBars() : LiveData<List<BarItem>?> {
-        return cache.getBars()
+    fun dbBars(sortKey: SortKeys) : LiveData<List<BarItem>?> {
+        return Transformations.map(cache.getBars()) {
+            if (sortKey == SortKeys.NAME) {
+                it?.sortedBy {
+                    it.name
+                }
+            } else {
+                it?.sortedByDescending {
+                    it.users
+                }
+            }
+
+        }
     }
 
     suspend fun apiFriendsList(

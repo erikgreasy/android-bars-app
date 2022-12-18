@@ -6,6 +6,11 @@ import com.example.zadanie.data.db.model.BarItem
 import com.example.zadanie.helpers.Evento
 import kotlinx.coroutines.launch
 
+enum class SortKeys {
+    PEOPLE,
+    NAME,
+}
+
 class BarsViewModel(private val repository: DataRepository): ViewModel() {
     private val _message = MutableLiveData<Evento<String>>()
     val message: LiveData<Evento<String>>
@@ -13,12 +18,17 @@ class BarsViewModel(private val repository: DataRepository): ViewModel() {
 
     val loading = MutableLiveData(false)
 
+    val sortKey: MutableLiveData<SortKeys> = MutableLiveData(SortKeys.values().first())
+
     val bars: LiveData<List<BarItem>?> =
-        liveData {
-            loading.postValue(true)
-            repository.apiBarList { _message.postValue(Evento(it)) }
-            loading.postValue(false)
-            emitSource(repository.dbBars())
+        Transformations.switchMap(sortKey) {
+            liveData {
+                repository.apiBarList { _message.postValue(Evento(it)) }
+
+                loading.postValue(true)
+                loading.postValue(false)
+                emitSource(repository.dbBars(it))
+            }
         }
 
     fun refreshData(){

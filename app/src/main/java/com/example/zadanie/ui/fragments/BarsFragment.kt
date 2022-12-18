@@ -3,6 +3,7 @@ package com.example.zadanie.ui.fragments
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.zadanie.R
+import com.example.zadanie.databinding.FilterChipBinding
 import com.example.zadanie.databinding.FragmentBarsBinding
 import com.example.zadanie.helpers.Injection
 import com.example.zadanie.helpers.PreferenceData
 import com.example.zadanie.ui.viewmodels.BarsViewModel
+import com.example.zadanie.ui.viewmodels.SortKeys
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.chip.Chip
 
 class BarsFragment : Fragment() {
     private lateinit var binding: FragmentBarsBinding
@@ -98,7 +102,17 @@ class BarsFragment : Fragment() {
                     )
                 }
             }
+
+            bnd.filterGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+                val checkedName = activity?.findViewById<Chip>(group.checkedChipId)?.text.toString()
+
+                viewmodel.sortKey.postValue(
+                    SortKeys.valueOf(checkedName.uppercase())
+                )
+            }
         }
+
+        populateChips()
 
         viewmodel.loading.observe(viewLifecycleOwner) {
             binding.swiperefresh.isRefreshing = it
@@ -119,5 +133,20 @@ class BarsFragment : Fragment() {
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun populateChips() {
+        for(key in SortKeys.values()) {
+            val chip = FilterChipBinding.inflate(layoutInflater).root
+            chip.text = key.name.lowercase().replaceFirstChar {
+                it.uppercase()
+            }
+
+            if(key == viewmodel.sortKey.value) {
+                chip.isChecked = true
+            }
+
+            binding.filterGroup.addView(chip)
+        }
     }
 }
