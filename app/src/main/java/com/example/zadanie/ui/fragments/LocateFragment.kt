@@ -100,26 +100,12 @@ class LocateFragment : Fragment() {
 
                 if (checkBackgroundPermissions()) {
                     it.playAnimation()
+                    viewmodel.checkMe()
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         permissionDialog()
                     }
                 }
-
-                it.addAnimatorListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(animation: Animator) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        viewmodel.checkMe()
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-                    }
-
-                    override fun onAnimationRepeat(animation: Animator) {
-                    }
-                })
             }
 
             bnd.nearbyBars.events = object : NearbyBarsEvents {
@@ -146,8 +132,6 @@ class LocateFragment : Fragment() {
 
         if (checkPermissions()) {
             loadData()
-        } else {
-            Navigation.findNavController(requireView()).navigate(R.id.action_to_bars)
         }
 
         viewmodel.message.observe(viewLifecycleOwner) {
@@ -196,9 +180,6 @@ class LocateFragment : Fragment() {
         }.build()
 
         geofencingClient.addGeofences(request, geofenceIntent).run {
-            addOnSuccessListener {
-                Navigation.findNavController(requireView()).navigate(R.id.action_to_bars)
-            }
             addOnFailureListener {
                 viewmodel.show("Geofence failed to create.") //permission is not granted for All times.
                 it.printStackTrace()
